@@ -1,0 +1,38 @@
+Java Full Stack 
+-----------------
+Frontend-What users see- HTML,CSS,Javascript,React
+backend -where logic build - JAVA ,spring ,springboot 
+database-where data is stored -MySQL
+
+Think like this -
+Frontend is the shop window where customers browse the products.
+The backend is the staff where they find and gives the product.
+The database is the warehouse where the products are stored.
+
+What is Agile?
+Agile is a just way of working.Instead of finishing whole project at once,we do it in small steps called sprint(usually 2 weeks). Each sprint we bulid something small,show it,get feedback, and then improve.
+
+devops??
+devops means development and operations ,using tools that acts as helpers to automate and streamline our workflow.
+
+Day1 -Introduction to java
+Java Features- Portable, Object-Oriented, Multithreaded, robust.
+
+Java Architecture:
+Source Code-->Compiler-->bytecode/classfile
+.java                     .class
+
+
+
+Write Java code using Java language tokens
+Identifiers
+Literals
+Reserved words
+Write Java code using operators
+Write Java code using conditional control structures
+if
+if-else
+if-else ladder
+switch case
+
+
