@@ -1,0 +1,79 @@
+OOPS Concepts 
+Abstraction
+Inheritance
+Encapsulation
+Polymorphism
+
+Abstraction:Hiding the implementation and providing essential features. 
+Abstraction can be achieved with abstract classes and interfaces.
+Abstract class:A class that is declared with the abstract keyword. It can have both abstract and non-abstract (concrete) methods.
+Abstract method :A method that is declared without an implementation. It uses the abstract keyword and must be implemented by subclasses.
+
+Interface: An interface in Java is a blueprint of a class that specifies what a class must do, but not how it does it. It is a 
+collection of abstract methods and static constants used to
+achieve total abstraction and multiple inheritance in Java
+
+When we use abstract and when Interface-->
+
+If we do not know about any things about implementation just we have requirement specification then we should be go for Interface
+If we are talking about implementation but not completely (partially implemented) then we should be go for abstract
+
+Inheritance:
+Aquiring the properties state and behavior from parent class to child class.
+
+Encapsulation:
+Encapsulation in Java is a mechanism of wrapping the data (variables) and code acting on the data (methods) together as a single unit. 
+In encapsulation, the variables of a class will be hidden from other classes, and can be accessed only through the methods of their 
+current class. Therefore, it is also known as data hiding.
+
+polymorphism:
+Polymorphism in Java is a core Object-Oriented Programming (OOP) concept that allows a single action to behave differently depending 
+on the context or the object performing it.
+It enables the same method or interface to behave differently depending on the object involved.
+-----------------------------------------------------------------------------------------------------------------
+
+Access Modifiers::
+
+Access Modifier    Same Class    Same Package    Subclass (Other Package)    Other Package
+-------------------------------------------------------------------------------------------
+private               ✔️              ❌                   ❌                      ❌
+default               ✔️              ✔️                   ❌                      ❌
+protected             ✔️              ✔️                   ✔️                      ❌
+public                ✔️              ✔️                   ✔️                      ✔️
+
+private → Only inside the same class.
+default → Same package only.
+protected → Same package + subclasses in other packages.
+public → Accessible everywhere.
+
+Method Overloading
+
+Method overloading allows multiple methods with the same name but different parameter lists within the same class. 
+The compiler chooses the appropriate method based on the arguments passed.
+
+Syntax:
+
+class Demo {
+ void show(int a) {
+ }
+  void show(int a, int b) {
+  }
+}
+
+Method Overriding
+
+Method overriding occurs when a subclass provides its own implementation of a method already defined in its superclass. 
+The overridden method is selected based on the actual object created.
+
+Syntax:
+
+class Parent {
+ void print() {
+ }
+}
+
+class Child extends Parent {
+@Override
+void print() {
+ }
+}
