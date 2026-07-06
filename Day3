@@ -1,0 +1,32 @@
+##Debugging
+
+Debugging=The process of identifying and fixing the errors.
+Common debugging phases --> REPRODUCE-->OBSERVE-->ISOLATE-->FIX-->VERIFY.
+
+TYPES OF ERRORS
+Syntax Error--- Voilates Java Rules
+Logical Error -- Code runs,But ouput wrong
+Runtime Error --  Code compiles but fails during execution.
+
+##Code Quality USING SONAR QUBE previously known as sonar lint
+SONAR QUBE INSTALLATION STEPS 
+AVAILAVABLE IN ALV PORTAL ACTIVITY PDF 
+
+MY PASSWORD AND TOKEN DETAILS:
+
+TOKEN::    sqp_627fe7e5e4bf0b8f2094114a2fcbce5028536eab
+
+
+admin
+password
+Sonarkalam@2002
+
+CREATE A sonar.properties file in repo and add these
+sonar.projectKey=CalculatorProject
+sonar.projectName=CalculatorProject
+sonar.sources=src
+sonar.java.binaries=bin //for normal projects
+       (or)
+sonar.java.binaries=target/classes //for maven projects
+sonar.token=sqp_627fe7e5e4bf0b8f2094114a2fcbce5028536eab
+sonar.host.url=http://localhost:9000
