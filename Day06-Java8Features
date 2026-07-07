@@ -1,0 +1,18 @@
+Java 08 Features Topics
+##Anonymous Classes,Functional Interfaces,anonymous inner classes
+##lamda expressions
+##method reference
+##Stream API
+##Terminal and non-terminal operations.
+
+Functional Interfaces 
+- Functional interface which contains only SAM
+- SAM Means "Single Abstract Method"
+-In functional Interface we can have static,default, and private methods also.
+Ex: java.util.function- all interfaces from this package are functional Interfaces.
+
+Lamda Expressions
+-The main objective of Lambda expression is :to Bring functional programming into java .
+-It is an Anonymous(Name less) function in Java.
+-What is Anonymous? It means Nameless, without return type and without access modifier.
+
