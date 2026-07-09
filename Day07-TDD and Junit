@@ -1,0 +1,82 @@
+##TDD
+TDD (Test-Driven Development) is a software development approach where you write the test first, then write the code.
+
+Normally, many developers do this:
+
+Write Code ➜ Run ➜ Test
+
+In TDD, you reverse the process:
+
+Write Test ➜ Run Test (Fails) ➜ Write Code ➜ Run Test (Passes) ➜ Improve Code
+
+TDD follows three simple steps
+
+These are called the Red → Green → Refactor cycle.
+
+Step 1: RED ❌
+
+Write a test.
+
+There is no code yet.
+
+Example:
+
+assertEquals(8, calculator.add(5,3));
+
+Run it.
+
+Result:
+
+FAILED
+
+Why?
+
+Because add() doesn't exist yet.
+
+This is called RED.
+
+Step 2: GREEN ✅
+
+Now write the smallest amount of code.
+
+public int add(int a,int b){
+    return a+b;
+}
+
+Run the test again.
+
+Result:
+
+PASSED
+
+This is called GREEN.
+
+Step 3: REFACTOR 🔄
+
+Your code works.
+
+Now improve it if needed.
+
+Maybe rename variables.
+
+Maybe remove duplicate code.
+
+But don't change functionality.
+
+Example:
+
+Before
+
+public int add(int x,int y){
+    return x+y;
+}
+
+After
+
+public int add(int firstNumber,int secondNumber){
+    return firstNumber+secondNumber;
+}
+
+Tests still pass.
+
+Done.
