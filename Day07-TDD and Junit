@@ -80,3 +80,72 @@ public int add(int firstNumber,int secondNumber){
 Tests still pass.
 
 Done.
+
+#############################################################################################################
+##Junit 
+What is Junit ??
+Definition
+
+JUnit is a Java Testing Framework used to automatically test Java applications.
+
+Instead of checking outputs manually,
+
+JUnit checks them automatically.
+
+It tells you
+
+✅ Passed
+
+❌ Failed
+
+## Why do we need JUnit?
+
+<--Without JUnit-->
+
+Run project
+Call methods
+Check output
+Modify code
+Run again
+Repeat
+
+..Very time consuming.
+
+<--With JUnit-->
+
+Run Tests
+JUnit automatically checks
+Pass/Fail
+## What is Unit Testing ??
+-> Testing each individual method is called Unit Testing.
+For example 
+in calculator class we run test cases for each method like add(), subtract(),multiply(),divide() .
+==>Project Structure Should be like
+
+src
+|
+main
+|
+Calculator.java
+|
+src
+|
+test
+|
+CalculatorTest.java
+
+###Maven Dependency
+<dependency>
+    <groupId>org.junit.jupiter</groupId>
+    <artifactId>junit-jupiter</artifactId>
+    <version>5.12.2</version>
+    <scope>test</scope>    //means only available during tests.Not included in any development.
+</dependency>
+
+##Test Life Cycle
+@BeforeAll-->@BeforeEach-->@Test-->@AfterEach-->(Repeat)-->@AfterAll
+
+
+
+
+
