@@ -145,6 +145,40 @@ CalculatorTest.java
 ##Test Life Cycle
 @BeforeAll-->@BeforeEach-->@Test-->@AfterEach-->(Repeat)-->@AfterAll
 
+@Test 
+--> Applied over methods to mark method as test
+--> visibility of @Test Annotation method can be public,Protected,default. 
+  but in junit 4 it would be only public method.
+-->also informs test engine what method needs to run.
+
+##Assertions
+assertions means comparing expectations vs actual output.
+if ->Expectations == actual output==>test case passed.
+else ->Expectations != actual output ==>test case failed
+
+Assertions are static methods .like asserEquals,assertArrayEquals.
+
+==>In eclispe we use right click and run as junit test fore every time but what if 
+any one asks to run the tests on any other platform , Independent of eclise we can use 
+"surefire" plugin which will result tests on any platform.
+ <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.5.3</version>
+ </plugin>
+
+Assertions:
+ assertArrayEquals() method
+-->Actual and expected arrays are equal.
+-->number of elements should match 
+-->elements of an array are equal.
+-->order of elements in an array
+
+assertThrows()-->
+for exceptions.
+
+
+
 
 
 
