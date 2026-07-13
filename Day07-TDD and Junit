@@ -184,6 +184,16 @@ for exceptions.
 @AfterEach--> it executes for every test case after.
   --> Runs  After EVERY test.
 
+@BeforeAll and After ALL
+@beforeAll -->use static and it will run only once before all the test cases.
+@AfterAll  -->use static and it will run only once after all the test cases.
+THese 2 are independent of instances and indpendent of objects. thats why we use 
+static keyword.
+
+
+
+
+
 
 
 
