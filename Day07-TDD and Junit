@@ -177,8 +177,12 @@ Assertions:
 assertThrows()-->
 for exceptions.
 
+@beforeEach and @afterEach
 
-
+@beforeEach -->it executes for every test case before .
+  -->Runs  Before EVERY test.
+@AfterEach--> it executes for every test case after.
+  --> Runs  After EVERY test.
 
 
 
