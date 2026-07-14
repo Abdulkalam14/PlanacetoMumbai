@@ -1,1 +1,324 @@
+JDBC Notes (Interview Revision)
+1. What is JDBC?
+JDBC stands for Java Database Connectivity.
+It is an API provided by Java (java.sql package).
+Used to connect Java applications with relational databases.
+Allows Java programs to execute SQL statements.
+Supports CRUD operations (Create, Read, Update, Delete).
 
+2. Why JDBC?
+To establish communication between Java and a database.
+Store and retrieve application data.
+Execute SQL queries from Java.
+Manage database transactions.
+
+3. JDBC Architecture
+Java Application
+       ↓
+    JDBC API
+       ↓
+ DriverManager
+       ↓
+ JDBC Driver
+       ↓
+   Database
+
+4. JDBC Components
+DriverManager
+Manages JDBC drivers.
+Establishes database connections.
+Uses getConnection().
+Connection
+Represents a session between Java and the database.
+Used to create Statement, PreparedStatement, and CallableStatement.
+Statement
+Executes static SQL queries.
+Less secure.
+Vulnerable to SQL Injection.
+PreparedStatement
+Executes precompiled SQL queries.
+Uses ? placeholders.
+Prevents SQL Injection.
+Better performance for repeated execution.
+CallableStatement
+Calls stored procedures.
+ResultSet
+Stores data returned by a SELECT query.
+Cursor-based object.
+Use next() to move through rows.
+SQLException
+Handles database-related exceptions.
+
+5. JDBC Driver Types
+Type 1
+JDBC-ODBC Bridge Driver.
+Obsolete.
+Type 2
+Native API Driver.
+Requires native libraries.
+Type 3
+Network Protocol Driver.
+Uses middleware.
+Type 4
+Thin Driver (Pure Java).
+Most commonly used.
+Example: MySQL Connector/J.
+
+6. Steps to Connect JDBC
+Import java.sql.*
+Load the driver (optional in modern JDBC)
+Create Connection
+Create Statement/PreparedStatement
+Execute SQL
+Process ResultSet (if applicable)
+Close resources
+
+7. Driver Loading
+
+Old way:
+
+Class.forName("com.mysql.cj.jdbc.Driver");
+
+Modern JDBC:
+
+Driver loads automatically.
+No need for Class.forName() if using JDBC 4.0+.
+
+8. Connection URL
+
+Example:
+
+jdbc:mysql://localhost:3306/studentdb
+
+Meaning:
+
+jdbc → JDBC protocol
+mysql → Database type
+localhost → Server
+3306 → MySQL port
+studentdb → Database name
+
+9. Statement vs PreparedStatement
+Statement	PreparedStatement
+Dynamic SQL	Precompiled SQL
+Slow	Faster
+SQL Injection Possible	Prevents SQL Injection
+Less Secure	More Secure
+Not reusable	Reusable
+
+Interview Point: Always prefer PreparedStatement for user input.
+
+10. SQL Injection
+Malicious SQL code entered through user input.
+Mainly occurs with Statement.
+Prevented by PreparedStatement.
+
+Example:
+
+' OR '1'='1
+
+11. executeQuery()
+Used for
+SELECT
+Returns
+ResultSet
+
+Example:
+
+ResultSet rs = ps.executeQuery();
+
+12. executeUpdate()
+Used for
+INSERT
+UPDATE
+DELETE
+CREATE
+ALTER
+DROP
+Returns
+int
+
+(Returns number of affected rows.)
+
+Example:
+
+int rows = ps.executeUpdate();
+
+13. execute()
+Used for
+Any SQL statement.
+Returns
+boolean
+true → ResultSet available.
+false → Update count available.
+
+14. ResultSet Methods
+
+Move Cursor
+
+next()
+
+Read Data
+
+getInt()
+
+getString()
+
+getDouble()
+
+getDate()
+
+15. CRUD Operations
+Create
+INSERT
+Read
+SELECT
+Update
+UPDATE
+Delete
+DELETE
+
+16. Transactions
+Purpose
+
+Ensures all operations succeed or fail together.
+
+Methods:
+
+setAutoCommit(false)
+
+commit()
+
+rollback()
+
+Example:
+
+Bank money transfer.
+
+17. Auto Commit
+
+Default:
+
+true
+
+Every SQL statement is committed automatically.
+
+Disable:
+
+con.setAutoCommit(false);
+
+18. Batch Processing
+
+Purpose:
+
+Execute multiple SQL statements together.
+Improves performance.
+
+Methods:
+
+addBatch()
+
+executeBatch()
+
+19. try-with-resources
+
+Automatically closes:
+
+Connection
+Statement
+ResultSet
+
+Preferred over manually closing resources.
+
+20. Connection Pooling
+
+Instead of creating a new connection every time:
+
+Request
+     ↓
+Borrow Connection
+     ↓
+Use
+     ↓
+Return to Pool
+
+Advantages:
+
+Faster
+Better performance
+Less memory usage
+
+Examples:
+
+HikariCP
+Apache DBCP
+C3P0
+
+
+21. Common Exceptions
+SQLException
+
+Reasons:
+Wrong URL
+Wrong Username
+Wrong Password
+SQL Syntax Error
+Database not running
+
+22. Best Practices
+Use PreparedStatement.
+Use try-with-resources.
+Close database resources.
+Use transactions for multiple related operations.
+Use batch processing for bulk inserts.
+Never hardcode credentials.
+Use connection pooling in production.
+
+23. Common Interview Questions
+What is JDBC?
+Explain JDBC architecture.
+What are JDBC components?
+Difference between Statement and PreparedStatement?
+What is SQL Injection?
+What is ResultSet?
+Difference between executeQuery(), executeUpdate(), and execute()?
+What is Class.forName()?
+Why don't we use Class.forName() in modern JDBC?
+What is Connection Pooling?
+What is Batch Processing?
+What is Transaction Management?
+Difference between commit() and rollback()?
+What is Auto Commit?
+What are the four JDBC Driver Types?
+24. JDBC Flow (Most Important)
+Load Driver (Optional)
+        ↓
+Create Connection
+        ↓
+Create PreparedStatement
+        ↓
+Set Parameters
+        ↓
+Execute SQL
+        ↓
+Process ResultSet (SELECT only)
+        ↓
+Close Resources
+25. JDBC Cheat Sheet (1-Minute Revision)
+Topic	Remember
+JDBC	Java Database Connectivity
+Package	java.sql
+Connection	Connects Java to DB
+Statement	Static SQL, not secure
+PreparedStatement	Secure, prevents SQL Injection
+CallableStatement	Stored Procedures
+ResultSet	Holds SELECT results
+executeQuery()	SELECT → ResultSet
+executeUpdate()	INSERT/UPDATE/DELETE/DDL → int
+execute()	Any SQL → boolean
+commit()	Save transaction
+rollback()	Undo transaction
+Batch Processing	Multiple SQL statements together
+Connection Pooling	Reuse connections
+Driver Type	Type 4 (Thin Driver) is most commonly used
+Driver Loading	Class.forName() usually not required in JDBC 4.0+
