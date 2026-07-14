@@ -1,0 +1,142 @@
+package com.LibraryManagement;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class LibraryManagementSystem {
+	
+	private static String url="jdbc:mysql://localhost:3306/mylib";
+	private static String username="root";
+	private static String password="root";
+	
+	public static void main(String[] args) {
+		//createBookTable();
+		//addBook(101,"Java Fundamentals","James Gosling"	,650,10);
+		//addBook(102, "JDBC Mastery","Kathy Sierra",	450,5);
+		//addBook(103,"Spring Boot Guide","Craig Walls",700,8);
+		displayAllBooks();
+		//searchBookById(103);
+		//updateBookPrice(102, 500.0);
+		//deleteBook(103);
+	}
+
+
+	private static void createBookTable() {
+		
+		String query="create table books(bookid INT PRIMARY KEY, title VARCHAR(100), author VARCHAR(50), price DOUBLE, quantity INT)";
+		try(Connection con=DriverManager.getConnection(url,username,password);
+				Statement stmt=con.createStatement()){
+			stmt.execute(query);
+		}
+		catch(SQLException e) {
+			System.out.println("Error while creating the table"+e.getMessage());
+		}
+	}
+	
+	
+	private static void addBook(int bookid, String title, String author, double price, int quantity) {
+		
+		String Insertquery="insert into books(bookid,title,author,price,quantity) values(?,?,?,?,?)";
+		try(Connection con=DriverManager.getConnection(url,username,password);
+				PreparedStatement pstmt=con.prepareStatement(Insertquery)){
+			pstmt.setInt(1, bookid);
+			pstmt.setString(2, title);
+			pstmt.setString(3, author);
+			pstmt.setDouble(4, price);
+			pstmt.setInt(5, quantity);
+			
+			int rowsInserted=pstmt.executeUpdate();
+			
+			if(rowsInserted>0) {
+				System.out.println(rowsInserted+" Inserted Successfully");
+			}
+		}
+		catch(SQLException e) {
+			System.out.println("Error occured while inserting "+e.getMessage());
+		}
+	}
+	
+	
+	private static void displayAllBooks() {
+		
+		String selectQuery="select * from books";
+		try(Connection con=DriverManager.getConnection(url,username,password);
+				Statement stmt=con.createStatement()){
+				ResultSet rs=stmt.executeQuery(selectQuery);
+			System.out.println("---------------Boook Records-----------------------");
+			while(rs.next()) {
+				System.out.println(rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3)+" "
+						+rs.getDouble(4)+" "+rs.getInt(5));
+				System.out.println();
+			}
+			System.out.println("------------------------------------------------");
+		}
+		catch(SQLException e) {
+			System.out.println("Errror Occuured while retireving the books"+e.getMessage());
+		}
+	}
+	
+	
+	private static void searchBookById(int bookid) {
+		
+		String SearchQuery="select * from books where bookid=?";
+		try(Connection con=DriverManager.getConnection(url,username,password);
+				PreparedStatement pstmt=con.prepareStatement(SearchQuery)){
+			
+			pstmt.setInt(1, bookid);
+			ResultSet rs=pstmt.executeQuery();
+			while(rs.next()) {
+				System.out.println(rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3)+" "
+						+rs.getDouble(4)+" "+rs.getInt(5));
+			}
+		}
+		catch(SQLException e) {
+			System.out.println("Error occuered while Retrieving book By iD"+e.getMessage());
+		}
+		
+	}
+	
+	
+	private static void updateBookPrice(int bookid, double price) {
+		
+		String UpdateQuery=" update books set price=? where bookid=?";
+		
+		try(Connection con=DriverManager.getConnection(url,username,password);
+				PreparedStatement pstmt=con.prepareStatement(UpdateQuery)){
+			
+			pstmt.setDouble(1, price);
+			pstmt.setInt(2, bookid);
+			int rowsUpdated=pstmt.executeUpdate();
+			if(rowsUpdated>0) {
+				System.out.println(rowsUpdated+" row(s) Updated Successfully");
+			}
+	     }
+		catch(SQLException e) {
+			System.out.println("Error Occured while updateding"+e.getMessage());
+		}
+	
+      }
+
+	private static void deleteBook(int bookid) {
+		String deleteQuery="delete from books where bookid=?";
+		
+		try(Connection con=DriverManager.getConnection(url,username,password);
+				PreparedStatement pstmt=con.prepareStatement(deleteQuery)){
+			pstmt.setInt(1, bookid);
+			int rowDeleted =pstmt.executeUpdate();
+			if(rowDeleted>0) {
+				System.out.println(rowDeleted+ "row(s) is deleted");
+			}
+			
+		}
+		catch(SQLException e) {
+			System.out.println("Error occured while deleting"+e.getMessage());
+		}
+	}
+	
+	
+}
