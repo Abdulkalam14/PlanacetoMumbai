@@ -1,0 +1,7 @@
+Why hibernate & why not jdbc ??
+
+JDBC is a low-level API that requires developers to write SQL queries, manage database connections, transactions, and manually map database rows to Java objects. 
+Hibernate is an ORM framework built on top of JDBC that automates these tasks. It converts Java objects into database records and vice versa, reducing boilerplate code, 
+improving maintainability, and providing advanced features such as caching, lazy loading, and relationship mapping. Hibernate internally uses JDBC to communicate with the 
+database, so it simplifies development rather than replacing JDBC.
+
