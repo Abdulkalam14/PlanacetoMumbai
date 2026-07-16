@@ -5,3 +5,58 @@ Hibernate is an ORM framework built on top of JDBC that automates these tasks. I
 improving maintainability, and providing advanced features such as caching, lazy loading, and relationship mapping. Hibernate internally uses JDBC to communicate with the 
 database, so it simplifies development rather than replacing JDBC.
 
+JPA-->
+Java Persistence API is a collection of classes and methods to persistently store the vast
+amounts of data into a database which is provided by the Oracle Corporation.
+JPA -ARCHITECTURE.
+                    JAVA APPLICATION
+                           │
+                           │
+                     Business Logic
+                           │
+                           ▼
+                  +------------------+
+                  | Entity Classes   |
+                  | (@Entity)        |
+                  +------------------+
+                           │
+                           ▼
+                  +------------------+
+                  | EntityManager    |
+                  +------------------+
+                           │
+                           ▼
+                +----------------------+
+                | EntityManagerFactory |
+                +----------------------+
+                           │
+                           ▼
+                  +------------------+
+                  | Persistence API  |
+                  | (JPA Interfaces) |
+                  +------------------+
+                           │
+                           ▼
+          +----------------------------------+
+          | Hibernate (JPA Implementation)   |
+          +----------------------------------+
+                           │
+                           ▼
+                        JDBC API
+                           │
+                           ▼
+                    MySQL Driver
+                           │
+                           ▼
+                     MySQL Database
+
+##EntityManagerFactory-->This is a Factory Class of ENTITY Manager .It create and manages multiple EntityManager instances.
+##EntityManager-->It is an Interface. It manages the persistence operations on objects.It works as a Factory for Query instances.
+##Entity-->Entities are the persistence objects, stored as records in the database.
+##EntityTransaction-->It has one-to-one Relationship with the EntityManager. For
+                      each EntityManager, operations are maintained by the EntityTransaction class.
+##Persistence-->This class contains static methods to obtain the EntityManagerFactory instance.
+
+
+
+
