@@ -57,6 +57,12 @@ JPA -ARCHITECTURE.
                       each EntityManager, operations are maintained by the EntityTransaction class.
 ##Persistence-->This class contains static methods to obtain the EntityManagerFactory instance.
 
+------------------ORM-------
+ORM(Object Relational Mapping)
+ORM Briefly tells us about what is ORM and how it works.ORM is programming ability that converts object type to relational type and 
+vice versa.
+The main feature of ORM is mapping or binding an object to its data in the database. While mapping we have to consider the data, 
+type of data and its relations with its self-entity or entity in any other table.
 
 
 
