@@ -64,5 +64,14 @@ vice versa.
 The main feature of ORM is mapping or binding an object to its data in the database. While mapping we have to consider the data, 
 type of data and its relations with its self-entity or entity in any other table.
 
+| **Task**                    | **Without ORM (JDBC)**                          | **With ORM (like Hibernate)**                       |
+| --------------------------- | ----------------------------------------------- | --------------------------------------------------- |
+| **Insert a user**           | Write `INSERT` SQL manually                     | `save(user)`                                        |
+| **Get all users**           | Write `SELECT`, map `ResultSet` manually        | `findAll()`                                         |
+| **Handle relationships**    | Write complex joins, nested loops               | Use `@OneToMany`, `@ManyToMany` — automatic mapping |
+| **Schema changes**          | Update SQL in every query                       | ORM can auto-adapt or run migrations                |
+| **Transactions & sessions** | Manually open/close connections, manage commits | ORM manages sessions & transactions automatically   |
+
+
 
 
