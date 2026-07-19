@@ -71,7 +71,18 @@ type of data and its relations with its self-entity or entity in any other table
 | **Handle relationships**    | Write complex joins, nested loops               | Use `@OneToMany`, `@ManyToMany` — automatic mapping |
 | **Schema changes**          | Update SQL in every query                       | ORM can auto-adapt or run migrations                |
 | **Transactions & sessions** | Manually open/close connections, manage commits | ORM manages sessions & transactions automatically   |
-
-
+---------------------------------------------------------------------------------------------------------------------------------------
+##Hibernate Architecture and Components---->
+| **Layer / Component**                     | **Role in Architecture**                                                                        |
+| ----------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| **Entity**                                | Java class mapped to a database table                                                           |
+| **Configuration & Mapping Files**         | Define database connection and entity mappings                                                  |
+| **SessionFactory**                        | Heavy, application-wide factory that manages database connections and creates `Session` objects |
+| **Session**                               | Lightweight, per-request object for CRUD and persistence operations                             |
+| **Transaction**                           | Manages commit and rollback of database changes                                                 |
+| **Persistence Context (1st-Level Cache)** | Tracks and synchronizes entity states inside a `Session`                                        |
+| **(Optional) 2nd-Level Cache**            | Shared cache across multiple sessions to improve performance                                    |
+| **Database**                              | Actual storage layer where data is permanently stored                                           |
+------------------------------------------------------------------------------------------------------------------------------------------------
 
 
