@@ -12,14 +12,13 @@ Maven is a **build automation and project management tool** used mainly for Java
 
 ## 2. Why Maven? (Why not manage JARs manually?)
 
-| Without Maven | With Maven |
-|---|---|
-| Manually download JARs and add to classpath | Dependencies auto-downloaded from repository |
-| No standard project structure | Follows a standard folder structure (easy for any dev to understand) |
-| Manual dependency conflict handling | Automatic **transitive dependency** management (if A needs B, Maven auto-fetches B) |
-| Manual build steps (compile, test, package separately) | Single command runs the entire build lifecycle |
-| Hard to share/reproduce builds across machines/teams | `pom.xml` ensures same build config everywhere (consistency) |
-| No easy versioning of libraries | Dependencies specified with exact versions in `pom.xml` |
+Without Maven	                                                                    With Maven
+Manually download JARs and add to classpath                   	Dependencies auto-downloaded from repository
+No standard project structure	                                   Follows a standard folder structure
+Manual dependency conflict handling	                            Automatic transitive dependency management
+Manual build steps (compile, test, package separately)	         Single command runs entire build lifecycle
+Hard to reproduce builds across machines/teams	                pom.xml ensures consistent build config everywhere
+No easy versioning of libraries	                                  Exact versions specified in pom.xml
 
 **In short:** Maven = standardization + automation + dependency management. This is why it's preferred over manually managing JARs, and it's also more structured than tools like Ant (which requires you to write build steps manually with no dependency management).
 
