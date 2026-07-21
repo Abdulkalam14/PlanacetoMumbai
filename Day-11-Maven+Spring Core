@@ -1,1 +1,163 @@
+------------------------------------MAVEN-------------------------------------------------------------
+# Maven Notes
 
+## 1. What is Maven?
+Maven is a **build automation and project management tool** used mainly for Java projects. It uses an XML file called `pom.xml` (Project Object Model) to manage:
+- Project dependencies (JARs)
+- Build lifecycle (compile, test, package, deploy)
+- Project structure (standard directory layout)
+- Plugins for various tasks (testing, packaging, reporting)
+
+---
+
+## 2. Why Maven? (Why not manage JARs manually?)
+
+| Without Maven | With Maven |
+|---|---|
+| Manually download JARs and add to classpath | Dependencies auto-downloaded from repository |
+| No standard project structure | Follows a standard folder structure (easy for any dev to understand) |
+| Manual dependency conflict handling | Automatic **transitive dependency** management (if A needs B, Maven auto-fetches B) |
+| Manual build steps (compile, test, package separately) | Single command runs the entire build lifecycle |
+| Hard to share/reproduce builds across machines/teams | `pom.xml` ensures same build config everywhere (consistency) |
+| No easy versioning of libraries | Dependencies specified with exact versions in `pom.xml` |
+
+**In short:** Maven = standardization + automation + dependency management. This is why it's preferred over manually managing JARs, and it's also more structured than tools like Ant (which requires you to write build steps manually with no dependency management).
+
+---
+
+## 3. Maven Installation Check
+Before using Maven in Eclipse, ensure it's set up:
+```
+mvn -v
+```
+This shows the Maven version, Java version, and JAVA_HOME — confirms Maven is installed and configured correctly (set in system PATH).
+
+*Note: Most modern Eclipse versions (like Eclipse IDE for Java EE/Enterprise Developers) come with an embedded Maven plugin (m2e) built-in — no separate install needed unless you want to use an external Maven version.*
+
+---
+
+## 4. How to Create a Maven Project in Eclipse
+
+**Steps:**
+1. Open Eclipse → `File` → `New` → `Other...`
+2. Search for **Maven** → select **Maven Project** → `Next`
+3. Check **"Create a simple project"** (skip archetype selection for a basic project) → `Next`
+4. Fill in:
+   - **Group Id** → e.g., `com.company.project` (like a package name, identifies your organization)
+   - **Artifact Id** → e.g., `my-app` (the project/JAR name)
+   - **Version** → e.g., `1.0.0`
+   - **Packaging** → `jar` or `war`
+5. Click `Finish`
+
+Eclipse will generate the standard Maven folder structure:
+```
+my-app
+ ├── src/main/java        → application source code
+ ├── src/main/resources   → config files, properties
+ ├── src/test/java        → test source code
+ ├── src/test/resources   → test resources
+ └── pom.xml              → project configuration file
+```
+
+---
+
+## 5. Adding Dependencies in Eclipse (pom.xml)
+
+**Option A — Directly edit pom.xml:**
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-java</artifactId>
+        <version>4.20.0</version>
+    </dependency>
+    <dependency>
+        <groupId>org.testng</groupId>
+        <artifactId>testng</artifactId>
+        <version>7.10.2</version>
+        <scope>test</scope>
+    </dependency>
+</dependencies>
+```
+Save the file → Eclipse auto-downloads the JARs from the **Maven Central Repository** into your local `.m2` repository.
+
+**Option B — Via Eclipse UI:**
+Right-click project → `Maven` → `Add Dependency` → search artifact name → select → `OK`
+
+**Where to find dependency snippets?**
+Go to [mvnrepository.com](https://mvnrepository.com) → search library → copy the `<dependency>` XML block → paste into `pom.xml`.
+
+**To manually refresh dependencies:**
+Right-click project → `Maven` → `Update Project` (or `Alt+F5`)
+
+---
+
+## 6. Maven Build Lifecycle (Phases)
+Maven follows a sequential lifecycle — running a later phase automatically runs all previous ones.
+
+| Phase | Description |
+|---|---|
+| `validate` | Checks project structure/config is correct |
+| `compile` | Compiles the source code |
+| `test` | Runs unit tests (via a testing framework like JUnit/TestNG) |
+| `package` | Packages compiled code into JAR/WAR |
+| `verify` | Runs checks to validate the package is valid |
+| `install` | Installs package into local repository (`.m2`) for use in other local projects |
+| `deploy` | Copies package to a remote repository for sharing with other teams |
+
+---
+
+## 7. Common Maven Commands
+
+| Command | Usage |
+|---|---|
+| `mvn -v` | Check Maven & Java version |
+| `mvn clean` | Deletes the `target` folder (old build files) |
+| `mvn compile` | Compiles the source code |
+| `mvn test` | Runs test cases |
+| `mvn package` | Builds JAR/WAR file |
+| `mvn install` | Installs the build into local `.m2` repo |
+| `mvn clean install` | Cleans old build + creates fresh build (most commonly used) |
+| `mvn clean test` | Cleans + runs tests only |
+| `mvn dependency:tree` | Shows all dependencies (including transitive ones) as a tree |
+| `mvn clean install -DskipTests` | Builds project but skips running tests |
+| `mvn test -Dtest=ClassName` | Runs a specific test class |
+| `mvn -Dmaven.test.failure.ignore=true test` | Continues build even if a test fails |
+
+**Running from Eclipse:**
+Right-click project → `Run As` → `Maven build...` → type goal (e.g., `clean install`) in the **Goals** field → `Run`
+
+---
+
+## 8. Maven Repositories
+- **Local Repository** → `.m2` folder on your machine (default: `C:\Users\<user>\.m2\repository` or `~/.m2/repository`), stores downloaded JARs
+- **Central Repository** → Maven's default public online repo (mvnrepository.com / repo.maven.apache.org)
+- **Remote/Corporate Repository** → Company-hosted repo (e.g., Nexus, Artifactory) for internal/private libraries
+
+**Flow:** Maven checks local repo first → if not found, downloads from central/remote repo → caches it in local repo for future use.
+
+---
+
+## 9. Key pom.xml Elements Summary
+```xml
+<project>
+    <groupId>...</groupId>       <!-- organization/company id -->
+    <artifactId>...</artifactId> <!-- project name -->
+    <version>...</version>       <!-- project version -->
+    <packaging>jar</packaging>   <!-- jar / war / pom -->
+    
+    <dependencies>...</dependencies>  <!-- external libraries -->
+    <build>
+        <plugins>...</plugins>        <!-- e.g., compiler plugin, surefire plugin for tests -->
+    </build>
+</project>
+```
+
+---
+
+## 10. Quick Interview-Style Points
+- Maven follows the principle of **"Convention over Configuration"** — standard structure, minimal setup.
+- Solves **dependency hell** via transitive dependency resolution.
+- `mvn clean install` is the most-used command in real projects/CI-CD pipelines.
+- Maven integrates well with CI/CD tools (Jenkins) and testing frameworks (TestNG/JUnit) — commonly used in Selenium test automation frameworks.
+- Alternative build tools: **Ant** (no dependency management, more manual) and **Gradle** (uses Groovy/Kotlin DSL, faster builds, more flexible than Maven).
