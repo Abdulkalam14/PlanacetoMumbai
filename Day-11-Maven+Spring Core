@@ -160,3 +160,8 @@ Right-click project → `Run As` → `Maven build...` → type goal (e.g., `clea
 - `mvn clean install` is the most-used command in real projects/CI-CD pipelines.
 - Maven integrates well with CI/CD tools (Jenkins) and testing frameworks (TestNG/JUnit) — commonly used in Selenium test automation frameworks.
 - Alternative build tools: **Ant** (no dependency management, more manual) and **Gradle** (uses Groovy/Kotlin DSL, faster builds, more flexible than Maven).
+---===========================================================================================================================================================
+==============================================================================================================================================================
+✨✨✨✨SPRING FRAMEWORK✨✨✨✨
+
+
