@@ -172,4 +172,242 @@ why spring??
 -->Java based application development framework.
 
 
+2. IOC (Inversion of Control)
+Definition: Instead of your code creating and managing objects, you hand that responsibility to the Spring IOC Container. The container creates objects, configures them, and manages their entire lifecycle.
+Without Spring	With Spring (IOC)
+Engine e = new Engine();  Car c = new Car(e);	You just declare the need. Spring creates Engine, creates Car, and injects Engine into Car.
+
+Why it matters: Loose coupling. Your Car class doesn't know or care how Engine was created — easier to test, swap implementations, and maintain.
+The container itself has two main flavors:
+•	BeanFactory – basic container, lazy loading (older, rarely used directly)
+•	ApplicationContext – advanced container, eager loading, most commonly used in real projects (this is what you'll use 99% of the time)
+ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+Car car = (Car) context.getBean("car");
+
+Key phrase for exams: "IOC is the principle; DI is the implementation technique Spring uses to achieve IOC."
+
+3. Dependency Injection (DI) and Its Types
+DI = the process of the container "injecting" the dependent object into a class, rather than the class creating it itself.
+Type 1: Constructor Injection
+Dependency is passed via the constructor. Best for mandatory dependencies.
+public class Car {
+    private Engine engine;
+ 
+    public Car(Engine engine) {   // injected via constructor
+        this.engine = engine;
+    }
+}
+
+XML:
+<bean id="car" class="com.example.Car">
+    <constructor-arg ref="engine"/>
+</bean>
+
+Type 2: Setter Injection
+Dependency is set via a setter method. Best for optional dependencies.
+public class Car {
+    private Engine engine;
+ 
+    public void setEngine(Engine engine) {   // injected via setter
+        this.engine = engine;
+    }
+}
+
+XML:
+<bean id="car" class="com.example.Car">
+    <property name="engine" ref="engine"/>
+</bean>
+
+Type 3: Field Injection
+Dependency injected directly into the field using @Autowired (annotation-based, no XML needed). Common in real projects but not recommended for testing purposes.
+public class Car {
+    @Autowired
+    private Engine engine;
+}
+
+Exam-style comparison table:
+Aspect	Constructor Injection	Setter Injection
+Dependency type	Mandatory	Optional
+Immutability	Object is immutable once created	Can be changed after creation
+Circular dependency	Fails	Can work
+Preferred by Spring team	Yes	Situational
+
+4. Bean Scopes and Lifecycle
+Bean Scopes (how many instances Spring creates)
+Scope	Meaning
+singleton (default)	Only one instance per Spring container, shared everywhere
+prototype	New instance every time the bean is requested
+request	New instance per HTTP request (web apps only)
+session	New instance per HTTP session (web apps only)
+
+<bean id="car" class="com.example.Car" scope="prototype"/>
+or with annotation:
+@Scope("prototype")
+@Component
+public class Car { }
+
+Exam trap: singleton scope is not the Singleton design pattern. Singleton scope means one instance per container, not one instance per JVM.
+Bean Lifecycle (order — commonly asked!)
+•	Container starts -> Bean instantiated (constructor called)
+•	Dependencies injected (setter/constructor injection happens)
+•	setBeanName(), setBeanFactory() (Aware interfaces, if implemented)
+•	@PostConstruct method / init-method called -> custom initialization logic
+•	Bean is ready and in use
+•	Container shuts down -> @PreDestroy method / destroy-method called -> cleanup logic
+public class Car {
+    @PostConstruct
+    public void init() {
+        System.out.println("Car bean initialized");
+    }
+ 
+    @PreDestroy
+    public void cleanup() {
+        System.out.println("Car bean about to be destroyed");
+    }
+}
+
+XML equivalent:
+<bean id="car" class="com.example.Car" init-method="init" destroy-method="cleanup"/>
+
+Memory hook: Instantiate -> Inject -> Initialize -> Use -> Destroy (I-I-I-U-D)
+
+5. XML Configuration
+Old-school but still asked in exams/interviews. Config lives in a separate beans.xml file.
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+ 
+    <bean id="engine" class="com.example.Engine"/>
+ 
+    <bean id="car" class="com.example.Car">
+        <constructor-arg ref="engine"/>
+    </bean>
+ 
+</beans>
+
+Loading it in Java:
+ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+Car car = context.getBean(Car.class);
+
+Key tags:
+•	<bean id="..." class="..."> – declares a bean
+•	<property name="..." ref="..."/> – setter injection
+•	<constructor-arg ref="..."/> – constructor injection
+•	<property name="..." value="..."/> – inject primitive/String values directly
+
+6. Autowiring and Its Types
+Autowiring = Spring automatically resolves and injects dependencies, without you writing <constructor-arg> or <property> tags manually.
+Type	How it matches	XML syntax
+byName	Matches bean id with the property/setter name	autowire="byName"
+byType	Matches by data type (fails if 2+ beans of same type exist)	autowire="byType"
+constructor	Like byType, but for constructor arguments	autowire="constructor"
+no (default)	No autowiring, manual wiring only	autowire="no"
+
+<bean id="car" class="com.example.Car" autowire="byType"/>
+
+Annotation-based autowiring (most used today):
+@Component
+public class Car {
+    @Autowired   // Spring auto-injects a matching Engine bean by type
+    private Engine engine;
+}
+
+Exam trap: If byType finds more than one matching bean, it throws NoUniqueBeanDefinitionException. Fix it with @Qualifier("beanName") to specify exactly which bean to inject.
+@Autowired
+@Qualifier("petrolEngine")
+private Engine engine;
+
+7. Java Configuration and Annotations
+Modern Spring avoids XML almost entirely, using annotations + Java config classes instead.
+Key annotations
+Annotation	Purpose
+@Configuration	Marks a class as a source of bean definitions (replaces XML file)
+@Bean	Marks a method whose return value becomes a Spring bean
+@Component	Marks a class to be auto-detected and registered as a bean
+@Autowired	Auto-injects a dependency
+@Qualifier	Resolves ambiguity when multiple beans of the same type exist
+@ComponentScan	Tells Spring which package(s) to scan for @Component classes
+@Service, @Repository, @Controller	Specializations of @Component for specific layers
+
+Java Config example (equivalent to the XML above)
+@Configuration
+@ComponentScan(basePackages = "com.example")
+public class AppConfig {
+ 
+    @Bean
+    public Engine engine() {
+        return new Engine();
+    }
+ 
+    @Bean
+    public Car car() {
+        return new Car(engine());   // constructor injection via Java config
+    }
+}
+
+Loading it:
+ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+Car car = context.getBean(Car.class);
+
+Exam comparison — XML vs Java Config vs Annotation-only:
+Approach	Where beans are declared	Verbosity
+XML	beans.xml	High
+Java Config	@Configuration class with @Bean methods	Medium
+Annotation (@Component + scan)	On the class itself	Low
+
+8. Reading Values from a Properties File
+Instead of hardcoding values like DB URLs or passwords, store them in a .properties file and inject them.
+application.properties:
+app.name=MySpringApp
+app.version=1.0
+db.url=jdbc:mysql://localhost:3306/mydb
+
+Method 1: XML approach
+<context:property-placeholder location="classpath:application.properties"/>
+ 
+<bean id="car" class="com.example.Car">
+    <property name="name" value="${app.name}"/>
+</bean>
+
+Method 2: Java Config approach
+@Configuration
+@PropertySource("classpath:application.properties")
+public class AppConfig {
+ 
+    @Value("${app.name}")
+    private String appName;
+}
+
+Method 3: Direct field injection with @Value
+@Component
+public class Car {
+    @Value("${app.version}")
+    private String version;
+}
+
+Exam trap: @PropertySource only loads the file — you still need @Value("${key}") to actually pull individual values into fields. And PropertySourcesPlaceholderConfigurer (or <context:property-placeholder> in XML) must be registered for ${...} placeholders to resolve.
+
+Quick Revision Cheat Sheet (day-before-exam skim)
+•	Maven = build + dependency tool; pom.xml is the config; lifecycle = validate -> compile -> test -> package -> install
+•	IOC = container controls object creation, not your code
+•	DI = the technique (constructor / setter / field) used to achieve IOC
+•	Singleton scope = one bean per container (default); Prototype = new bean every request
+•	Bean lifecycle = Instantiate -> Inject -> @PostConstruct -> Use -> @PreDestroy
+•	Autowiring types = byName, byType, constructor, no
+•	@Qualifier fixes ambiguity when byType finds multiple matches
+•	Java Config = @Configuration + @Bean replaces XML <bean> tags
+•	@Component/@Service/@Repository = auto-detected beans via @ComponentScan
+•	@Value("${key}") + @PropertySource = reading from properties files
+
+Suggested Catch-Up Order (since you're 2 days behind)
+1.	Read section 2 (IOC) and 3 (DI) first — everything else builds on this.
+2.	Then section 4 (Bean scopes/lifecycle) — short, memorize the I-I-I-U-D order.
+3.	Then sections 5 & 6 (XML + Autowiring) together, since autowiring is explained in XML terms.
+4.	Finish with 7 & 8 (Java Config + Properties) — this is the modern approach most real code uses, and it will make the earlier XML sections click in retrospect.
+Try writing a tiny practice project: one Engine class, one Car class, wire them with XML, then redo the same wiring with Java Config + annotations. Seeing the same result from three different techniques is what makes this topic finally "click."
+
+
+
 
